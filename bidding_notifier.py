@@ -144,8 +144,8 @@ class BiddingNotifier:
     ]
     
     def __init__(self):
-        self.webhook = "https://open.feishu.cn/open-apis/bot/v2/hook/ecec741c-1993-43b4-88ea-b73e7e7c2bc2"
-        self.fetch_hours = 25
+        self.webhook = os.getenv("FEISHU_WEBHOOK", "https://open.feishu.cn/open-apis/bot/v2/hook/ecec741c-1993-43b4-88ea-b73e7e7c2bc2")
+        self.fetch_hours = int(os.getenv("FETCH_HOURS", "2"))
         self.pushed_file = "pushed_bids.json"
         self.scraper = BiddingScraper()
         self.feishu = FeishuAPI()

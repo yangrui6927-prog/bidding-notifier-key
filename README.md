@@ -31,6 +31,16 @@ python bidding_notifier.py
 - `FEISHU_WEBHOOK`: 飞书Webhook地址
 - `FETCH_HOURS`: 抓取时间范围（默认25小时）
 
+## GitHub Actions 定时运行
+
+配置每小时自动抓取并推送：
+
+1. Fork 或创建仓库
+2. 在仓库 Settings → Secrets → Actions 中添加 `FEISHU_WEBHOOK`
+3. 定时任务会自动每小时运行
+
+详见 [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md)
+
 ## 推送目标
 
 飞书群: https://open.feishu.cn/open-apis/bot/v2/hook/ecec741c-1993-43b4-88ea-b73e7e7c2bc2
