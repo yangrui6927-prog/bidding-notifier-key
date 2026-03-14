@@ -34,7 +34,7 @@ jobs:
     - name: 运行招标监控
       env:
         FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
-        FETCH_HOURS: 48
+        FETCH_HOURS: 2
       run: python bidding_notifier.py
     
     - name: 保存推送记录
