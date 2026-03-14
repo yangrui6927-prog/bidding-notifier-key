@@ -170,10 +170,14 @@ class BiddingNotifier:
     
     def is_recent(self, bid):
         try:
-            bid_date = date_parser.parse(bid.get("date", ""))
+            date_str = bid.get("date", "")
+            bid_date = date_parser.parse(date_str)
             cutoff = datetime.now() - timedelta(hours=self.fetch_hours)
-            return bid_date > cutoff
-        except:
+            result = bid_date > cutoff
+            print(f"    → 日期解析: '{date_str}' -> {bid_date}, 截止时间: {cutoff}, 是否最近: {result}")
+            return result
+        except Exception as e:
+            print(f"    → 日期解析失败 '{bid.get('date', '')}': {e}, 默认通过")
             return True
     
     def format_message(self, bids):
@@ -221,15 +225,24 @@ class BiddingNotifier:
         matched = []
         for bid in all_bids:
             title = bid.get("title", "")
+            bid_date = bid.get("date", "")
+            print(f"  检查: {title[:40]}... | 日期: {bid_date}")
+
             if title in pushed:
+                print(f"    → 已推送过，跳过")
                 continue
             if not self.is_recent(bid):
+                cutoff = datetime.now() - timedelta(hours=self.fetch_hours)
+                print(f"    → 不在时间范围内 ({self.fetch_hours}小时), 截止时间: {cutoff}")
                 continue
             is_match, keyword = self.match_by_title(bid)
             if is_match:
+                print(f"    → ✓ 匹配关键词: {keyword}")
                 matched.append(bid)
-        
-        print(f"总计: {len(all_bids)} 条, 匹配: {len(matched)} 条\n")
+            else:
+                print(f"    → 未匹配任何关键词")
+
+        print(f"\n总计: {len(all_bids)} 条, 匹配: {len(matched)} 条")
         
         # 为匹配项获取详情URL
         if matched:

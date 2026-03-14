@@ -13,7 +13,14 @@ jobs:
     steps:
     - name: 检出代码
       uses: actions/checkout@v4
-      
+
+    - name: 下载历史推送记录
+      uses: actions/download-artifact@v4
+      with:
+        name: pushed-bids-history
+        path: .
+      continue-on-error: true
+
     - name: 设置 Python 环境
       uses: actions/setup-python@v5
       with:
